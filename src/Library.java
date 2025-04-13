@@ -14,7 +14,7 @@ public class Library {
         this.scanner = new Scanner(System.in);
     }
 
-    public void login() {
+    public void Login() {
         if (currentUser != null) {
             System.out.println("You are already logged in.");
             return;
@@ -44,5 +44,26 @@ public class Library {
         } else {
             return scanner.nextLine();
         }
+    }
+
+    public void logout() {
+        if (currentUser == null) {
+            System.out.println("You are not logged in.");
+            return;
+        }
+        currentUser = null;
+        System.out.println("Successfully logged out.");
+    }
+
+    public void displayAllBooks() {
+        if (currentUser == null) {
+            System.out.println("Please login first.");
+            return;
+        }
+        if (books.isEmpty()) {
+            System.out.println("No books available.");
+            return;
+        }
+        books.forEach(book -> System.out.println(book.toShortString() + "\n"));
     }
 }

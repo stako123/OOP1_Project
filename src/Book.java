@@ -98,4 +98,11 @@ public class Book {
                 "Keywords: " + String.join(", ", keywords) + "\n" +
                 "Rating: " + rating + "\n";
     }
+
+    public String toShortString() {
+        return "Title" + title +
+                "Author" + author +
+                "Gerne" + genre +
+                "Libraly Number" + uniqueNumber;
+    }
 }
