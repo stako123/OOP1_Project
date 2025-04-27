@@ -1,5 +1,6 @@
 import java.io.Console;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Library {
     private List<Book> books;
@@ -65,5 +66,101 @@ public class Library {
             return;
         }
         books.forEach(book -> System.out.println(book.toShortString() + "\n"));
+    }
+
+    public void displayBookInfo(String libraryNumber) {
+        if (currentUser == null) {
+            System.out.println("Please login first.");
+            return;
+        }
+        books.stream()
+                .filter(book -> book.getUniqueNumber().equals(libraryNumber))
+                .findFirst()
+                .ifPresentOrElse(
+                        book -> System.out.println(book.toString()),
+                        () -> System.out.println("Book not found.")
+                );
+    }
+
+    public void findBooks(String option, String input) {
+        if (currentUser == null) {
+            System.out.println("Please login first.");
+            return;
+        }
+
+        String search = input.toLowerCase();
+        List<Book> results = new ArrayList<>();
+
+        for (Book book : books) {
+            switch (option.toLowerCase()) {
+                case "title":
+                    if (book.getTitle().toLowerCase().contains(search)) {
+                        results.add(book);
+                    }
+                    break;
+                case "author":
+                    if (book.getAuthor().toLowerCase().contains(search)) {
+                        results.add(book);
+                    }
+                    break;
+                case "tag":
+                    for (String keyword : book.getKeywords()) {
+                        if (keyword.toLowerCase().contains(search)) {
+                            results.add(book);
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid search option.");
+                    return;
+            }
+        }
+
+        if (results.isEmpty()) {
+            System.out.println("No books found.");
+            return;
+        }
+
+        for (Book book : results) {
+            System.out.println(book.toShortString() + "\n");
+        }
+    }
+
+
+    public void sortBooks(String option, boolean ascending) {
+        if (currentUser == null) {
+            System.out.println("Please login first.");
+            return;
+        }
+
+        List<Book> sortedBooks = new ArrayList<>(books);
+        switch (option.toLowerCase()) {
+            case "title":
+                sortedBooks.sort((a, b) -> ascending ?
+                        a.getTitle().compareToIgnoreCase(b.getTitle()) :
+                        b.getTitle().compareToIgnoreCase(a.getTitle()));
+                break;
+            case "author":
+                sortedBooks.sort((a, b) -> ascending ?
+                        a.getAuthor().compareToIgnoreCase(b.getAuthor()) :
+                        b.getAuthor().compareToIgnoreCase(a.getAuthor()));
+                break;
+            case "year":
+                sortedBooks.sort((a, b) -> ascending ?
+                        Integer.compare(a.getYear(), b.getYear()) :
+                        Integer.compare(b.getYear(), a.getYear()));
+                break;
+            case "rating":
+                sortedBooks.sort((a, b) -> ascending ?
+                        Double.compare(a.getRating(), b.getRating()) :
+                        Double.compare(b.getRating(), a.getRating()));
+                break;
+            default:
+                System.out.println("Invalid sort option.");
+                return;
+        }
+
+        sortedBooks.forEach(book -> System.out.println(book.toShortString() + "\n"));
     }
 }
