@@ -163,4 +163,71 @@ public class Library {
 
         sortedBooks.forEach(book -> System.out.println(book.toShortString() + "\n"));
     }
+
+    public void addUser(String username, String password) {
+        if (currentUser == null || !currentUser.isAdmin()) {
+            System.out.println("Access denied. Admin privileges required.");
+            return;
+        }
+
+        if (users.stream().anyMatch(u -> u.getUsername().equals(username))) {
+            System.out.println("Username already exists.");
+            return;
+        }
+
+        users.add(new User(username, password, false));
+        //saveData();
+        System.out.println("User added successfully.");
+    }
+
+    public void removeUser(String username) {
+        if (currentUser == null || !currentUser.isAdmin()) {
+            System.out.println("Access denied. Admin privileges required.");
+            return;
+        }
+
+        if (username.equals("admin")) {
+            System.out.println("Cannot remove admin user.");
+            return;
+        }
+
+        boolean removed = users.removeIf(u -> u.getUsername().equals(username));
+        if (removed) {
+            //saveData();
+            System.out.println("User removed successfully.");
+        } else {
+            System.out.println("User not found.");
+        }
+    }
+
+    public void addBook(Book book) {
+        if (currentUser == null || !currentUser.isAdmin()) {
+            System.out.println("Access denied. Admin privileges required.");
+            return;
+        }
+
+        if (books.stream().anyMatch(b -> b.getUniqueNumber().equals(book.getUniqueNumber()))) {
+            System.out.println("Book with this library number already exists.");
+            return;
+        }
+
+        books.add(book);
+        //saveData();
+        System.out.println("Book added successfully.");
+    }
+
+    public void removeBook(String libraryNumber) {
+        if (currentUser == null || !currentUser.isAdmin()) {
+            System.out.println("Access denied. Admin privileges required.");
+            return;
+        }
+
+        boolean removed = books.removeIf(book -> book.getUniqueNumber().equals(libraryNumber));
+        if (removed) {
+            //saveData();
+            System.out.println("Book removed successfully.");
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
 }
