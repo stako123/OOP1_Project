@@ -212,7 +212,7 @@ public class Library {
         }
 
         books.add(book);
-        //saveData();
+        //saveData();bi
         System.out.println("Book added successfully.");
     }
 
@@ -229,5 +229,19 @@ public class Library {
         } else {
             System.out.println("Book not found.");
         }
+    }
+
+    public void displayHelp() {
+        System.out.println("Available commands:");
+        System.out.println("login - Login to the system");
+        System.out.println("logout - Logout from the system");
+        System.out.println("books all - Display all books");
+        System.out.println("books info <library_number> - Display detailed information about a book");
+        System.out.println("books find <option> <search_string> - Search for books (options: title, author, tag)");
+        System.out.println("books sort <option> [asc|desc] - Sort books (options: title, author, year, rating)");
+        System.out.println("users add <username> <password> - Add new user (admin only)");
+        System.out.println("users remove <username> - Remove user (admin only)");
+        System.out.println("help - Display this help message");
+        System.out.println("exit - Exit the program");
     }
 }

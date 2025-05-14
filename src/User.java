@@ -27,4 +27,9 @@ public class User {
                 "%s"+ password+
                 "%b"+ isAdmin;
     }
+
+    public static User fromString(String line) {
+        String[] parts = line.split(",");
+        return new User(parts[0], parts[1], Boolean.parseBoolean(parts[2]));
+    }
 }
