@@ -41,4 +41,47 @@ public class FileHandler {
             System.err.println("Error saving users: " + e.getMessage());
         }
     }
+
+    public static List<Book> loadBooks() {
+        List<Book> books = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(BOOKS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                String[] keywords = parts[5].split(",");
+                books.add(new Book(
+                        parts[0], // avtor
+                        parts[1], // ime
+                        parts[2], // janr
+                        parts[3], // opisanie
+                        Integer.parseInt(parts[4]), // godina
+                        List.of(keywords), // kluchova duma
+                        Double.parseDouble(parts[6]), // ocenka
+                        parts[7]  // id
+                ));
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading books: " + e.getMessage());
+        }
+        return books;
+    }
+
+    public static void saveBooks(List<Book> books) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(BOOKS_FILE))) {
+            for (Book book : books) {
+                writer.println(String.format("%s|%s|%s|%s|%d|%s|%.2f|%s",
+                        book.getAuthor(),
+                        book.getTitle(),
+                        book.getGenre(),
+                        book.getDescription(),
+                        book.getYear(),
+                        String.join(",", book.getKeywords()),
+                        book.getRating(),
+                        book.getUniqueNumber()
+                ));
+            }
+        } catch (IOException e) {
+            System.err.println("Error saving books: " + e.getMessage());
+        }
+    }
 }
